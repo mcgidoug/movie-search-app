@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { getMovies } from "./api/movies";
+import SearchBar from "./components/SearchBar";
+import Results from "./components/Results";
+import "./App.css";
 
 function App() {
+  const [movies, setMovies] = useState([]);
+
+  const handleSubmit = async (userInput, page = 1) => {
+    const data = await getMovies(userInput, page);
+    const movies = data.Search;
+    console.log(data);
+    setMovies(movies);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SearchBar handleSubmit={handleSubmit} />
+      <Results movies={movies} />
     </div>
   );
 }
